@@ -23,7 +23,7 @@ def insert_or_update_database(sql: str, data: tuple) -> None:
     # connect to the database
     conn = sqlite3.connect(DBC.path)
     cur = conn.cursor()
-    cur.execute(sql_query, data)
+    cur.execute(sql, data)
     conn.commit()
     conn.close()
 

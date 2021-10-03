@@ -31,8 +31,8 @@ class DatabaseConfig:
     message_upsert_sql = """
                             insert or replace into message (
                                 id,
-                                from,
-                                to,
+                                sender,
+                                recipient,
                                 message,
                                 datetime)
                                 

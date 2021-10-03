@@ -14,23 +14,23 @@ def new_user() -> str:
     pass
 
 
-def edit_user() -> str:
+def edit_user() -> tuple:
     pass
 
 
-def delete_user() -> str:
+def delete_user() -> tuple:
     pass
 
 
-def send_message() -> str:
+def send_message() -> tuple:
     pass
 
 
-def get_sent_messages() -> str:
+def get_sent_messages() -> tuple:
     pass
 
 
-def receive_messages() -> str:
+def receive_messages() -> tuple:
     pass
 
 

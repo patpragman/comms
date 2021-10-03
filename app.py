@@ -28,8 +28,6 @@ We use Flask, the Flask Sessions Library,PassLib, the database is in SQLite.
 -Pat 10/2
 
 """
-import sqlite3
-
 from flask import Flask  # flask apps are handled with this class
 from flask import request # request handling with flask is processed in here
 from process import *  # the processing of payloads happens in this file
@@ -40,6 +38,7 @@ from errors import AppError
 import json
 
 app = Flask(__name__)
+app.secret_key = Config.secret_key
 
 
 @app.route('/info', methods=["POST", "GET"])
@@ -71,11 +70,29 @@ def process() -> str:
     data = {"message": ""}
     response_type = "error"  # the default is to expect something as broken
 
-
     try:
         if request.method == "POST":
             # validate password first
             data_received = request.json()  # this gets JSON sent from the client
+
+            # if this fails, there'll be a key error
+            username = data_received['username']
+            password = data_received['password']
+            payload = data_received['payload']
+
+            # build a dictionary of all the users and passwords in the database
+            auth_dict = {user[1]: user[2] for user in select_all_from("users")}
+
+            if username not in auth_dict:
+                assert AppError("Username not found.")
+
+            # alright, now see that the user authenticates
+            if not Config.pwd_context.verify(password, auth_dict[username]):
+                assert AppError("Incorrect password.")
+
+            process_function = process_payload(payload)
+            response_type, data = process_function(payload)
+
 
         else:
             """
@@ -87,6 +104,9 @@ def process() -> str:
     except AppError as app_error:
         # catch app errors here
         data["message"] = str(app_error)
+    except KeyError as key_error:
+        # if you don't have the appropriate key in the json you sent
+        data['message'] = "JSON formatted incorrectly. \n" + str(key_error)
     except sqlite3.Error as sql_error:
         # catch SQL errors here
         data["message"] = str(sql_error)

@@ -30,7 +30,8 @@ We use Flask, the Flask Sessions Library,PassLib, the database is in SQLite.
 """
 
 
-from flask import Flask
+from flask import Flask  # flask apps are handled with this class
+from flask import request # request handling with flask is processed in here
 from process import *  # the processing of payloads happens in this file
 from sql import *  # the SQL magic occurs here
 from config import * # all the configuration stuff happens in here
@@ -60,10 +61,24 @@ def process() -> str:
 
     Eventually, get requests should send a message back to however sent the request.
 
-
     :return: json string
     """
-    return json.dumps("Skeleton, nothing yet.")
+    sender_ip = request.remote_addr  # this is the IP address of the person who sent the request
+
+    if request.method == "POST":
+        # validate password
+        pass
+    else:
+        """
+        The responses from the server send back a json file detailing the response type,
+        and explaining that there was an error with the POST type
+        """
+        data = {"message": "Error!  Only POST requests are accepted by the server."
+
+                           }
+        payload = {"response_type": "error",
+                   "data": data}
+        return json.dumps(payload)
 
 
 if __name__ == '__main__':

@@ -28,13 +28,15 @@ We use Flask, the Flask Sessions Library,PassLib, the database is in SQLite.
 -Pat 10/2
 
 """
-
+import sqlite3
 
 from flask import Flask  # flask apps are handled with this class
 from flask import request # request handling with flask is processed in here
 from process import *  # the processing of payloads happens in this file
 from sql import *  # the SQL magic occurs here
 from config import * # all the configuration stuff happens in here
+from errors import AppError
+
 import json
 
 app = Flask(__name__)
@@ -65,20 +67,37 @@ def process() -> str:
     """
     sender_ip = request.remote_addr  # this is the IP address of the person who sent the request
 
-    if request.method == "POST":
-        # validate password
-        pass
-    else:
-        """
-        The responses from the server send back a json file detailing the response type,
-        and explaining that there was an error with the POST type
-        """
-        data = {"message": "Error!  Only POST requests are accepted by the server."
+    # this is the standard thing to send back.
+    data = {"message": ""}
+    response_type = "error"  # the default is to expect something as broken
 
-                           }
-        payload = {"response_type": "error",
-                   "data": data}
-        return json.dumps(payload)
+
+    try:
+        if request.method == "POST":
+            # validate password first
+            data_received = request.json()  # this gets JSON sent from the client
+
+        else:
+            """
+            The responses from the server send back a json file detailing the response type,
+            and explaining that there was an error with the POST type
+            """
+            raise AppError("Bad request type.")
+
+    except AppError as app_error:
+        # catch app errors here
+        data["message"] = str(app_error)
+    except sqlite3.Error as sql_error:
+        # catch SQL errors here
+        data["message"] = str(sql_error)
+    except Exception as general_error:
+        # finally, generally catch everything else here
+        data["message"] = str(general_error)
+
+    # always return something...even if it's not that illuminating
+    payload = {"response_type": response_type,
+               "data": data}
+    return json.dumps(payload)
 
 
 if __name__ == '__main__':

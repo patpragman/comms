@@ -8,20 +8,6 @@ the "payload" is sent as an object to methods and classes in this
 file.
 """
 
-# classes to manage messages and users - may move to separate files later
-
-
-class Message:
-
-    def __init__(self) -> None:
-        pass
-
-
-class User:
-
-    def __init__(self) -> None:
-        pass
-
 
 # functions to process various tasks of the app
 def new_user() -> str:

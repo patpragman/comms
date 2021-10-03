@@ -3,18 +3,45 @@
 # 10/2/21
 
 import sqlite3
+from config import DatabaseConfig as DBC
 
 
-class Database:
+"""
+This file defines several functions that manage database insertions, 
+updates, clearing rows, query, etc.
+"""
+
+
+def insert_or_update_database(sql: str, data: tuple) -> None:
     """
-    This is technically a doc string.  Whatever.  But seriously,
-    describe the database class in this thing.
 
+    :param sql: A string with the SQL statement
+    :param data: a tuple with the data to pass into the db
+    :return: nothing - it works or it doesn't
     """
 
-    def __init__(self) -> None:
-        """
-        Initialize the connection with the database so that you can edit things.
+    # connect to the database
+    conn = sqlite3.connect(DBC.path)
+    cur = conn.cursor()
+    cur.execute(sql_query, data)
+    conn.commit()
+    conn.close()
 
-        """
-        pass
+
+def select_all_from(table: str, where: str = "") -> list:
+    """
+
+    :param table: this is the table you wish to
+    :param where: string to add to add to the query
+    :return: list of all the rows in the database
+    """
+
+    conn = sqlite3.connect(DBC.path)
+    cur = conn.cursor()
+    if where == "":
+        cur.execute(DBC.select.format(table=table))
+    else:
+        cur.execute(DBC.select_where.format(table=table, where=where))
+
+    rows = cur.fetchall() # get all the rows back from the DB
+    return rows

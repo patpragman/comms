@@ -1,6 +1,5 @@
 # test to see that the info page works
 import requests
-import json
 
 # fire up the app first
 

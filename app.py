@@ -58,7 +58,7 @@ def info() -> str:
 @app.route('/', methods=["POST", "GET"])
 def process() -> str:
     """
-    This method checks to see if the user authenticates then sends the payload to be processsed
+    This method checks to see if the user authenticates then sends the payload to be processed
 
     Eventually, get requests should send a message back to however sent the request.
 
@@ -73,8 +73,9 @@ def process() -> str:
     try:
         if request.method == "POST":
             # validate password first
-            data_received = request.json()  # this gets JSON sent from the client
-
+            data_received = request.json  # this gets JSON sent from the client
+            for key in data_received:
+                print(key, "->", data_received[key])
             # if this fails, there'll be a key error
             username = data_received['username']
             password = data_received['password']
@@ -106,7 +107,7 @@ def process() -> str:
         data["message"] = str(app_error)
     except KeyError as key_error:
         # if you don't have the appropriate key in the json you sent
-        data['message'] = "JSON formatted incorrectly. \n" + str(key_error)
+        data['message'] = "JSON formatted incorrectly. Resulting in a key_error:" + str(key_error)
     except sqlite3.Error as sql_error:
         # catch SQL errors here
         data["message"] = str(sql_error)

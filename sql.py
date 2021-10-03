@@ -12,7 +12,7 @@ updates, clearing rows, query, etc.
 """
 
 
-def insert_or_update_database(sql: str, data: tuple) -> None:
+def execute_sql(sql: str, data: tuple) -> None:
     """
 
     :param sql: A string with the SQL statement

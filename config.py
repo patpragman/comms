@@ -49,6 +49,16 @@ class DatabaseConfig:
                             values (?,?,?);
                             """
 
+    add_user_sql = """
+    
+                        insert into users (
+                                username,
+                                password)
+                                
+                                
+                            values (?,?);
+    """
+
     select = """
                 select * from {table};
     """

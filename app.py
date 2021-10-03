@@ -74,8 +74,7 @@ def process() -> str:
         if request.method == "POST":
             # validate password first
             data_received = request.json  # this gets JSON sent from the client
-            for key in data_received:
-                print(key, "->", data_received[key])
+
             # if this fails, there'll be a key error
             username = data_received['username']
             password = data_received['password']
@@ -83,13 +82,12 @@ def process() -> str:
 
             # build a dictionary of all the users and passwords in the database
             auth_dict = {user[1]: user[2] for user in select_all_from("users")}
-
             if username not in auth_dict:
-                assert AppError("Username not found.")
+                raise AppError("Username not found.")
 
             # alright, now see that the user authenticates
             if not Config.pwd_context.verify(password, auth_dict[username]):
-                assert AppError("Incorrect password.")
+                raise AppError("Incorrect password.")
 
             process_function = process_payload(payload)
             response_type, data = process_function(payload)

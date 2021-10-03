@@ -15,4 +15,6 @@ info_json = requests.get(url + "/info").json()
 info_data = info_json['data']
 assert "data" in info_json
 assert "message" in info_data
+
+# notify that the test is complete
 print('Info and Main Page get request tests successful!')

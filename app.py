@@ -29,10 +29,10 @@ We use Flask, the Flask Sessions Library,PassLib, the database is in SQLite.
 
 """
 from flask import Flask  # flask apps are handled with this class
-from flask import request # request handling with flask is processed in here
+from flask import request  # request handling with flask is processed in here
 from process import *  # the processing of payloads happens in this file
 from sql import *  # the SQL magic occurs here
-from config import * # all the configuration stuff happens in here
+from config import *  # all the configuration stuff happens in here
 from errors import AppError
 
 import json
@@ -91,7 +91,6 @@ def process() -> str:
 
             process_function = process_payload(payload)
             response_type, data = process_function(payload)
-
 
         else:
             """

@@ -3,6 +3,7 @@
 # 10/2/21
 from passlib.context import CryptContext
 
+
 class Config:
 
     ssl_context = "adhoc"  # change in production
@@ -10,7 +11,6 @@ class Config:
 
     pwd_context = CryptContext(schemes=["pbkdf2_sha256"],
                                deprecated="auto")  # this is the password context for passlib
-
 
 
 class DatabaseConfig:

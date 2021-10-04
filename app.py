@@ -15,7 +15,7 @@ In the generalist sense, works like this:
     When the payload is processed, a response is generated and sent
     back to the sender.
 
-Payload types:
+task types:
     New User
     Edit User
     Delete User

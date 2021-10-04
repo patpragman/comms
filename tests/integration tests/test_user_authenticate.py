@@ -25,3 +25,13 @@ main_data = main_json['data']
 assert "password" in main_data['message']
 
 print("User login fails appropriately")
+
+# now do the same thing and test to see that password ISN'T in the failue message
+outgoing_payload = {"username": "user_0",
+                    "password": "0",
+                    "payload": {"broken!": "yup"}}
+main_json = requests.post(url, json=outgoing_payload).json()
+main_data = main_json['data']
+assert not "password" in main_data['message']
+
+print("User authentication tests good.")

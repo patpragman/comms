@@ -91,3 +91,4 @@ def process_payload(payload: dict) -> callable:
     else:
         raise errors.AppError("Invalid API task.")
 
+

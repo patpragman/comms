@@ -9,6 +9,8 @@ file.
 """
 import config
 import errors
+import sql
+
 
 
 # functions to process various tasks of the app
@@ -36,10 +38,16 @@ def new_user(payload: dict) -> tuple:
 
     # sql thing sending stuff out I think. Can i even test this?
 
-    execute_sql(config.DatabaseConfig.add_user_sql, data)
+    sql.execute_sql(config.DatabaseConfig.add_user_sql, data)
 
-    return "Where are these statuses supposed to come from?", username
-    # Just returning username because i don't know where the actual data comes from
+    result = sql.check_user(username)
+    if result
+        exitstatus = ("The user was successfully added to the database", 0)
+    else
+        exitstatus = ("Uh-oh, we couldn't verify that the user was added", 1)
+
+    return exitstatus
+
 
 
 def edit_user() -> tuple:

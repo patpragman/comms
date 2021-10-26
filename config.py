@@ -66,3 +66,7 @@ class DatabaseConfig:
     select_where = """
                     select * from {table} where {};
     """
+
+    user_exists = """
+                    select * from users where username == {username}
+    """

@@ -45,3 +45,13 @@ def select_all_from(table: str, where: str = "") -> list:
 
     rows = cur.fetchall() # get all the rows back from the DB
     return rows
+
+def check_user(user: str) -> bool
+    conn = sqlite3.connect(DBC.path)
+    cur = conn.cursor()
+    cur.execute(DBC.user_exists.format(username=user))
+    if cur.fetchone()
+        return True
+    else
+        return False
+

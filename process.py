@@ -7,7 +7,7 @@ json objects get parsed in the app.py file then if it authenticates,
 the "payload" is sent as an object to methods and classes in this
 file.
 """
-
+import config
 import errors
 
 
@@ -36,9 +36,9 @@ def new_user(payload: dict) -> tuple:
 
     # sql thing sending stuff out I think. Can i even test this?
 
-    execute_sql("insert into users (username,password)", data)
+    execute_sql(config.DatabaseConfig.add_user_sql, data)
 
-    return "Where are these status supposed to come from?", username
+    return "Where are these statuses supposed to come from?", username
     # Just returning username because i don't know where the actual data comes from
 
 

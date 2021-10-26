@@ -26,8 +26,20 @@ def new_user(payload: dict) -> tuple:
     """
 
     # as an example
-    data = {"response_type": "success - but shitty success"}
-    return "New User is not implemented", data
+    # data = {"response_type": "success - but shitty success"}
+    # return "New User is not implemented", data
+
+    username = payload.get("username")
+    password = payload.get("password")
+
+    data = (username, password)
+
+    # sql thing sending stuff out I think. Can i even test this?
+
+    execute_sql("insert into users (username,password)", data)
+
+    return "Where are these status supposed to come from?", username
+    # Just returning username because i don't know where the actual data comes from
 
 
 def edit_user() -> tuple:

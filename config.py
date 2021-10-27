@@ -68,5 +68,5 @@ class DatabaseConfig:
     """
 
     user_exists = """
-                    select * from users where username == {username}
+                    SELECT * FROM users WHERE username = '{user}';
     """

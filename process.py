@@ -41,9 +41,9 @@ def new_user(payload: dict) -> tuple:
     sql.execute_sql(config.DatabaseConfig.add_user_sql, data)
 
     result = sql.check_user(username)
-    if result
+    if result:
         exitstatus = ("The user was successfully added to the database", 0)
-    else
+    else:
         exitstatus = ("Uh-oh, we couldn't verify that the user was added", 1)
 
     return exitstatus

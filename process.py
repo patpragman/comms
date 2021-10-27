@@ -11,6 +11,7 @@ import config
 import errors
 import sql
 
+from config import Config
 from sql import execute_sql
 
 
@@ -32,8 +33,17 @@ def new_user(payload: dict) -> tuple:
     # data = {"response_type": "success - but shitty success"}
     # return "New User is not implemented", data
 
+    password_hash = Config.pwd_context.hash  # use this as your hash function
+
+    # Alex, you can do this with the .get() method...or you can reference it directly
     username = payload.get("username")
-    password = payload.get("password")
+    password = password_hash(payload.get("password"))
+
+    """
+    You are free to do either one.  It's up to you.
+    
+    username = payload['username']
+    password = hash(payload['password'])"""
 
     data = (username, password)
 

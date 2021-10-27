@@ -11,6 +11,7 @@ import config
 import errors
 import sql
 
+from sql import execute_sql
 
 
 # functions to process various tasks of the app
@@ -38,16 +39,21 @@ def new_user(payload: dict) -> tuple:
 
     # sql thing sending stuff out I think. Can i even test this?
 
-    sql.execute_sql(config.DatabaseConfig.add_user_sql, data)
+    execute_sql(config.DatabaseConfig.add_user_sql, data)
 
     result = sql.check_user(username)
     if result:
-        exitstatus = ("The user was successfully added to the database", 0)
+        return_data = {"response_type": "success",
+                       "message": f"Added the user {username} to the database."}
+
+        exit_status = ("Success!  Created a New User", return_data)
     else:
-        exitstatus = ("Uh-oh, we couldn't verify that the user was added", 1)
+        return_data = {"response_type": "failure",
+                       "message": f"Failed to add the user {username} to the database."}
 
-    return exitstatus
+        exit_status = ("Uh-oh, we couldn't verify that the user was added", return_data)
 
+    return exit_status
 
 
 def edit_user() -> tuple:
@@ -94,7 +100,7 @@ def process_payload(payload: dict) -> callable:
     """
 
     # for some reason a hash table did not work.  Got the following error:
-    # 'unhashable type: 'dict', so let's just use if statements
+    # 'un-hashable type: 'dict', so let's just use if statements
 
     if task == "new_user":
         return new_user
@@ -110,5 +116,3 @@ def process_payload(payload: dict) -> callable:
         return receive_messages
     else:
         raise errors.AppError("Invalid API task.")
-
-

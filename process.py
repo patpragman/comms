@@ -66,8 +66,24 @@ def new_user(payload: dict) -> tuple:
     return exit_status
 
 
-def edit_user() -> tuple:
-    pass
+def edit_password(user: str) -> tuple:
+    password_hash = Config.pwd_context.hash
+    try1 = input("Enter the new password: ")
+    try2 = input("Verify the new password: ")
+    if try1 == try2:
+        newPassword = password_hash(try1)
+        sql.update_password(user, newPassword)
+        return_data = {"response_type": "success",
+                       "message": f"updated the password for {user}."}
+        exit_status = ("Success!  Password has been updated", return_data)
+
+    else:
+        print("Those passwords don't match")
+        return_data = {"response_type": "failure",
+                       "message": f"Failed to update the password for {user}."}
+        exit_status = ("Password update failed due to unmatched password inputs", return_data)
+
+    return exit_status
 
 
 def delete_user() -> tuple:

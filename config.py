@@ -76,3 +76,8 @@ class DatabaseConfig:
                     SET password = '{newPassword}'
                     WHERE username = '{user}';
     """
+
+    delete_user = """
+                    DELETE FROM users
+                    WHERE username = '{user}';
+    """

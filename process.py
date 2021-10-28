@@ -86,8 +86,20 @@ def edit_password(user: str) -> tuple:
     return exit_status
 
 
-def delete_user() -> tuple:
-    pass
+def delete_user(user: str) -> tuple:
+    ans = input("Are you SURE you want to delete this user? (y/n)")
+    if ans == 'y' or ans == 'Y':
+        sql.delete_user(user)
+        return_data = {"response_type": "success",
+                       "message": f"The user {user} was removed from the database."}
+        exit_status = ("Success!  User deleted", return_data)
+    else:
+        print("Aborting operation")
+        return_data = {"response_type": "failure",
+                       "message": f"Operation was aborted by user."}
+        exit_status = ("Operation was aborted by user", return_data)
+
+    return exit_status
 
 
 def send_message() -> tuple:

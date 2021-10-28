@@ -70,3 +70,9 @@ class DatabaseConfig:
     user_exists = """
                     SELECT * FROM users WHERE username = '{user}';
     """
+
+    set_password = """
+                    UPDATE users 
+                    SET password = '{newPassword}'
+                    WHERE username = '{user}';
+    """

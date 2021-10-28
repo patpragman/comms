@@ -130,8 +130,8 @@ def process_payload(payload: dict) -> callable:
 
     if task == "new_user":
         return new_user
-    elif task == "edit_user":
-        return edit_user
+    elif task == "edit_password":
+        return edit_password
     elif task == "delete_user":
         return delete_user
     elif task == "send_message":

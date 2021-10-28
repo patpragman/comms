@@ -55,3 +55,8 @@ def check_user(user: str) -> bool:
     else:
         return False
 
+def update_password(user: str, newPassword: str):
+    conn = sqlite3.connect(DBC.path)
+    cur = conn.cursor()
+    cur.execute(DBC.set_password.format(user=user, newPassword=newPassword))
+    conn.commit()  #HAS TO RUN AFTER ANY UPDATE OR INSERT

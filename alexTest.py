@@ -6,10 +6,6 @@ import sql
 #print(process.new_user(sampleDict)) # Wrapped in a print statement to get the return value
 
 
-# This was me just testing my check_user function.
-# This function normally runs as part of process.new_user
-# to verify a user was added.
 
-
-# now testing password updater
-process.edit_password('neofromthematrix')
+# now testing user deleter. Create a user with the code above and then delete them with the code below
+print(process.delete_user("hogrider69"))

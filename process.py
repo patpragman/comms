@@ -13,6 +13,7 @@ import sql
 
 from config import Config
 from sql import execute_sql
+from sql import update_password
 
 
 # functions to process various tasks of the app
@@ -66,9 +67,10 @@ def new_user(payload: dict) -> tuple:
     return exit_status
 
 
-def edit_password(user: str) -> tuple:
-    # this will fail when app.py tries to send a dictionary to this function
+def edit_password(payload: dict) -> tuple:
 
+
+    # this will fail when app.py tries to send a dictionary to this function
     """
     # I think something like this would be better
     edit_password(payload: dict) -> tuple:
@@ -88,45 +90,24 @@ def edit_password(user: str) -> tuple:
     """
 
 
+
+# Function starts here
     password_hash = Config.pwd_context.hash
-
-    # this should be handled by whatever sends the request
-    try1 = input("Enter the new password: ")
-    try2 = input("Verify the new password: ")
-    if try1 == try2:
-        newPassword = password_hash(try1)
-
-        # better code would be to add this function to the import like:
-        """
-        from sql import update_password
-        """
-        # just like we did for the other function we imported
-        sql.update_password(user, newPassword)
-        return_data = {"response_type": "success",
+    user = payload.get("username")
+    newPassword = password_hash(payload.get("password"))
+    update_password(user, newPassword)
+    return_data = {"response_type": "success",
                        "message": f"updated the password for {user}."}
-        exit_status = ("Success!  Password has been updated", return_data)
-
-    else:
-        print("Those passwords don't match")
-        return_data = {"response_type": "failure",
-                       "message": f"Failed to update the password for {user}."}
-        exit_status = ("Password update failed due to unmatched password inputs", return_data)
+    exit_status = ("Success!  Password has been updated", return_data)
 
     return exit_status
 
-
 def delete_user(user: str) -> tuple:
-    ans = input("Are you SURE you want to delete this user? (y/n)")
-    if ans == 'y' or ans == 'Y':
-        sql.delete_user(user)
-        return_data = {"response_type": "success",
+
+    sql.delete_user(user)
+    return_data = {"response_type": "success",
                        "message": f"The user {user} was removed from the database."}
-        exit_status = ("Success!  User deleted", return_data)
-    else:
-        print("Aborting operation")
-        return_data = {"response_type": "failure",
-                       "message": f"Operation was aborted by user."}
-        exit_status = ("Operation was aborted by user", return_data)
+    exit_status = ("Success!  User deleted", return_data)
 
     return exit_status
 

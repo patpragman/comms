@@ -67,11 +67,40 @@ def new_user(payload: dict) -> tuple:
 
 
 def edit_password(user: str) -> tuple:
+    # this will fail when app.py tries to send a dictionary to this function
+
+    """
+    # I think something like this would be better
+    edit_password(payload: dict) -> tuple:
+        ...
+
+    then concerning password validation, we could do 3 things
+        1.  validate the password on the client side (I think this is the best, but that's just me)
+        2.  try1, and try2 in entries in the payload, for instance:
+            if payload['try1'] == payload['try2']:
+                # update password code
+                ...
+        3.  not worry about it and just immediately jam the password into the db:
+            update_password(payload['user'], password_hash(payload['password']))
+
+    regardless, if we end up triggering this function from the browser, the user will never see it
+    because this input() will print in the console window of the server.
+    """
+
+
     password_hash = Config.pwd_context.hash
+
+    # this should be handled by whatever sends the request
     try1 = input("Enter the new password: ")
     try2 = input("Verify the new password: ")
     if try1 == try2:
         newPassword = password_hash(try1)
+
+        # better code would be to add this function to the import like:
+        """
+        from sql import update_password
+        """
+        # just like we did for the other function we imported
         sql.update_password(user, newPassword)
         return_data = {"response_type": "success",
                        "message": f"updated the password for {user}."}
